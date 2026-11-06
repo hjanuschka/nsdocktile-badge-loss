@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Badge Demo PWA</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#121212">
+<style>
+  body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#121212;color:#eee;
+       display:flex;flex-direction:column;align-items:center;gap:16px;padding:40px}
+  button{font-size:18px;padding:12px 20px;border-radius:8px;border:1px solid #444;
+         background:#1e1e1e;color:#FFC107;cursor:pointer}
+  #log{font-family:monospace;white-space:pre-wrap;color:#9e9e9e;text-align:center}
+  h1{color:#FFC107}
+</style>
+</head>
+<body>
+<h1>setAppBadge demo</h1>
+<button onclick="reqPerm()">1. Request notification permission</button>
+<button onclick="setB()">2. navigator.setAppBadge(5)</button>
+<button onclick="clearB()">navigator.clearAppBadge()</button>
+<div id="log"></div>
+<script>
+  const log = m => document.getElementById('log').textContent += m + "\n";
+  async function reqPerm(){ try{ const p = await Notification.requestPermission(); log('Notification.permission = '+p); }catch(e){ log('perm error '+e); } }
+  async function setB(){ try{ await navigator.setAppBadge(5); log('setAppBadge(5) resolved'); }catch(e){ log('error '+e); } }
+  async function clearB(){ try{ await navigator.clearAppBadge(); log('clearAppBadge resolved'); }catch(e){ log('error '+e); } }
+  log('Notification.permission = '+(window.Notification ? Notification.permission : 'n/a'));
+  if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').then(()=>log('sw registered')); }
+</script>
+</body>
+</html>
